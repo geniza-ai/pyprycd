@@ -78,10 +78,12 @@ class PyPrycd:
                   min_sold_date: str = None, max_sold_date: str = None,
                   comp_type: str = None,
                   remove_duplicates: bool = False,
-                  excluded_sources: list = [],
+                  excluded_sources=None,
                   comp_age: int = 1, test: bool = False
                   ) -> pd.DataFrame:
 
+        if excluded_sources is None:
+            excluded_sources = []
         if test is False:
             url = "https://prycd.com/_functions/comps"
         else:
