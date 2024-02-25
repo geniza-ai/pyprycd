@@ -1,6 +1,8 @@
 from functools import lru_cache
 from importlib import resources as impresources
+from typing import List
 
+import dateparser
 import pandas as pd
 import requests
 from requests import HTTPError
@@ -62,7 +64,7 @@ class PyPrycd:
         response = requests.post(url=url, json=data, headers=headers, timeout=1000)
         if response.status_code == 200:
             pricing_data = response.json()
-            return pd.DataFrame.from_dict(pd.json_normalize(pricing_data['pricing']))
+            return pd.json_normalize(pricing_data['pricing'])
 
         raise HTTPError(response.status_code)
 
@@ -127,6 +129,15 @@ class PyPrycd:
         if comp_age > 1:
             params['comp_age'] = comp_age
 
+        # Clean up dates.
+        if min_list_date:
+            params['min_list_date'] = PyPrycd.__convert_date(min_list_date)
+        if max_list_date:
+            params['max_list_date'] = PyPrycd.__convert_date(max_list_date)
+        if min_sold_date:
+            params['min_sold_date'] = PyPrycd.__convert_date(min_sold_date)
+        if max_sold_date:
+            params['max_sold_date'] = PyPrycd.__convert_date(max_sold_date)
 
         response = requests.get(url, params=params, timeout=1000)
 
@@ -148,3 +159,26 @@ class PyPrycd:
         data = pd.read_csv(input_file, encoding="ISO-8859-1")
         fips_code = data[data['long_name'].str.lower() == county_name.lower()][['fips']]
         return fips_code['fips'].values[0]
+
+    @staticmethod
+    @lru_cache
+    def get_counties_in_state(state: str) -> List[str]:
+        input_file = impresources.files(static_data) / 'county_fips_master.csv'
+        data = pd.read_csv(input_file, encoding="ISO-8859-1")
+
+        # If the input is a state code
+        if len(state) == 2:
+            return data[data['state_abbr'].str.upper() == state]['long_name'].to_list()
+        else:
+            return data[data['state_name'].str.lower() == state.lower()]['long_name'].to_list()
+
+
+    @staticmethod
+    def __convert_date(date_str:str) -> str:
+        """
+        Converts a date to the mm/dd/yyyy format required by Prycd
+        :param date_str:
+        :return: A date string in the format mm/dd/yyyy
+        """
+        date = dateparser.parse(date_str)
+        return date.strftime("%m/%d/%Y")

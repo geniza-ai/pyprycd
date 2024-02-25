@@ -1,5 +1,5 @@
 # PyPRYCD
-This module provides a simple wrapper for working with the PRYCD APIs for real estate analysis.
+This module provides a simple unofficial wrapper for working with the PRYCD APIs for real estate analysis.
 
 ## Getting Started
 To install, simply execute the following command in the command line:
@@ -13,10 +13,11 @@ Once you have installed the module, you can now make API calls, however you will
 
 ## Methods
 * `get_comps()`:  Returns PRYCD comparables in a requested region.
+* `get_counties_in_state(<state>)`:  Returns a list of counties in a state. Accepts either a state name or code.
 * `get_fips_code(<county>)`: Returns the FIPS code for a county. Note that you must spell out the full county name and state. IE: `Maricopa County AZ`
-* `get_pricing()`:  Returns PRYCD estimated values for a requested property
+* `get_pricing()`:  Returns PRYCD estimated values for a requested property.  Supports all options for the PRYCD API.
 * `set_pricing_api_key(<api_key>)`: Sets or resets the pricing API key. 
-* `set_comp_api_key(<api_key>)`  Sets or resets the comp API key.
+* `set_comp_api_key(<api_key>)`  Sets or resets the comp API key.  Supports all options for the PRYCD API.
 
 
 ## Example Usage
