@@ -172,6 +172,19 @@ class PyPrycd:
         else:
             return data[data['state_name'].str.lower() == state.lower()]['long_name'].to_list()
 
+    @staticmethod
+    @lru_cache
+    def get_state_abbr_list():
+        input_file = impresources.files(static_data) / 'county_fips_master.csv'
+        raw_data = pd.read_csv(input_file, encoding="ISO-8859-1")
+        return raw_data['state_abbr'].drop_duplicates().to_list()
+
+    @staticmethod
+    @lru_cache
+    def get_state_names():
+        input_file = impresources.files(static_data) / 'county_fips_master.csv'
+        raw_data = pd.read_csv(input_file, encoding="ISO-8859-1")
+        return raw_data['state_name'].drop_duplicates().to_list()
 
     @staticmethod
     def __convert_date(date_str:str) -> str:
