@@ -8,8 +8,7 @@ this_directory = Path(__file__).parent
 setup_args = dict(
     name='pyprycd',
     # Add Packages
-    packages=find_packages('pyprycd'),
-    package_dir={'pyprycd': ''},
+    packages=find_packages(),
     include_package_data=True,
     version=__version__,
     license='MIT',
