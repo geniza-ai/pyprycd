@@ -7,13 +7,17 @@ this_directory = Path(__file__).parent
 
 setup_args = dict(
     name='pyprycd',
-    packages=find_packages(include=['pyprycd', 'pyprycd.*']),
+    # Add Packages
+    packages=find_packages('pyprycd'),
+    package_dir={'pyprycd': ''},
+    include_package_data=True,
     version=__version__,
     license='MIT',
     description='An unofficial Python Client for the PRYCD API for Real Estate Analysis.',
     author='Charles S. Givre',
     author_email='charles@geniza.ai',
     url='https://github.com/geniza-ai/pyprycd',
+
     long_description = (this_directory / "README.md").read_text(encoding='utf-8'),
     long_description_content_type="text/markdown",
     classifiers=[
