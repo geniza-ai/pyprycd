@@ -10,6 +10,13 @@ setup_args = dict(
     # Add Packages
     packages=find_packages(),
     include_package_data=True,
+    install_requires=[
+        'setuptools',
+        'requests',
+        'pandas',
+        'pyarrow',
+        'dateparser'
+    ],
     version=__version__,
     license='MIT',
     description='An unofficial Python Client for the PRYCD API for Real Estate Analysis.',
@@ -31,7 +38,6 @@ setup_args = dict(
         'Operating System :: OS Independent',
         'Topic :: Internet'
     ],
-    install_requires=open('requirements.txt', encoding="utf-8").read().splitlines(),
 )
 
 
