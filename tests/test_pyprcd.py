@@ -1,6 +1,6 @@
 import unittest
 
-from pyprycd import PyPrycd
+from src.pyprycd.pyprycd import PyPrycd
 
 
 class TestPyPrycd(unittest.TestCase):
