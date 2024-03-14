@@ -1,12 +1,12 @@
 # pyproject.toml
 
 [build-system]
-requires = ["setuptools", "setuptools-scm", "dynamic-versioning"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyprycd"
-version = "0.1.8"
+version="0.1.9"
 description = "An unofficial Python Client for the PRYCD API for Real Estate Analysis."
 authors = [
     {name = "Charles S. Givre", email = "charles@geniza.ai"},
@@ -37,8 +37,4 @@ Issues = "https://github.com/geniza-ai/pyprycd/issues"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-where = ["pyprycd"]
 exclude = ["tests"]
-
-[tool.setuptools.dynamic]
-version = {attr = "pyprycd.__version__"}

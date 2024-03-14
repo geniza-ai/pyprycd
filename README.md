@@ -21,6 +21,7 @@ Once you have installed the module, you can now make API calls, however you will
 
 
 ## Example Usage
+
 ```python
 from pyprycd import PyPrycd
 
