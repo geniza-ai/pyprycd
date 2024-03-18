@@ -80,12 +80,10 @@ class PyPrycd:
                   min_sold_date: str = None, max_sold_date: str = None,
                   comp_type: str = None,
                   remove_duplicates: bool = False,
-                  excluded_sources: list = None,
+                  excluded_sources: str = None,
                   comp_age: int = 1, test: bool = False
                   ) -> pd.DataFrame:
 
-        if excluded_sources is None:
-            excluded_sources = []
         if test is False:
             url = "https://prycd.com/_functions/comps"
         else:
@@ -93,7 +91,7 @@ class PyPrycd:
 
         params = {
             'user_id': self.__comp_api_key,
-            'count': comp_count,
+            'count_only': comp_count,
             'county': county,
             'min_acreage': min_acreage,
             'max_acreage': max_acreage,
@@ -120,7 +118,7 @@ class PyPrycd:
             params['remove_duplicates'] = 0
 
         if excluded_sources is not None and len(excluded_sources) > 0:
-            params['excluded_sources'] = ','.join(excluded_sources)
+            params['excluded_sources'] = excluded_sources
 
         if comp_age > 1:
             params['comp_age'] = comp_age
