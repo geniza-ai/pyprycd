@@ -69,7 +69,7 @@ class PyPrycd:
         raise HTTPError(response.status_code)
 
     @lru_cache
-    def get_comps(self, count_only: bool = False,
+    def get_comps(self, comp_count: int = 10,
                   county: str = None,
                   min_acreage: float = 0.0, max_acreage: float = 0.0,
                   state: str = None,
@@ -80,7 +80,7 @@ class PyPrycd:
                   min_sold_date: str = None, max_sold_date: str = None,
                   comp_type: str = None,
                   remove_duplicates: bool = False,
-                  excluded_sources=None,
+                  excluded_sources: list = None,
                   comp_age: int = 1, test: bool = False
                   ) -> pd.DataFrame:
 
@@ -93,6 +93,7 @@ class PyPrycd:
 
         params = {
             'user_id': self.__comp_api_key,
+            'count': comp_count,
             'county': county,
             'min_acreage': min_acreage,
             'max_acreage': max_acreage,
@@ -100,11 +101,6 @@ class PyPrycd:
             'city': city,
             'zip_code': zip_code
         }
-
-        if count_only:
-            params['count'] = 1
-        else:
-            params['count'] = 0
 
         if min_price >= 0.0:
             params['min_price'] = min_price
@@ -123,7 +119,7 @@ class PyPrycd:
         else:
             params['remove_duplicates'] = 0
 
-        if len(excluded_sources) > 0:
+        if excluded_sources is not None and len(excluded_sources) > 0:
             params['excluded_sources'] = ','.join(excluded_sources)
 
         if comp_age > 1:
@@ -169,8 +165,8 @@ class PyPrycd:
         # If the input is a state code
         if len(state) == 2:
             return data[data['state_abbr'].str.upper() == state]['long_name'].to_list()
-        else:
-            return data[data['state_name'].str.lower() == state.lower()]['long_name'].to_list()
+
+        return data[data['state_name'].str.lower() == state.lower()]['long_name'].to_list()
 
     @staticmethod
     @lru_cache
