@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyprycd"
-version="0.1.11"
+version="0.1.12"
 description = "An unofficial Python Client for the PRYCD API for Real Estate Analysis."
 authors = [
     {name = "Charles S. Givre", email = "charles@geniza.ai"},
