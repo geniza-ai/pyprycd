@@ -159,3 +159,4 @@ cython_debug/
 /analyzer/main/utils/cc.en.300.bin
 /analyzer/main/utils/cc.en.300.bin.gz
 /venv_laptop/
+/tests/private_tests.py
