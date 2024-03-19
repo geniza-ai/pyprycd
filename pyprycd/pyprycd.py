@@ -1,5 +1,6 @@
 from functools import lru_cache
 from importlib import resources as impresources
+from pprint import pprint
 from typing import List
 
 import dateparser
@@ -69,7 +70,7 @@ class PyPrycd:
         raise HTTPError(response.status_code)
 
     @lru_cache
-    def get_comps(self, comp_count: int = 10,
+    def get_comps(self, comp_count: int = -1,
                   county: str = None,
                   min_acreage: float = 0.0, max_acreage: float = 0.0,
                   state: str = None,
@@ -84,6 +85,11 @@ class PyPrycd:
                   comp_age: int = 1, test: bool = False
                   ) -> pd.DataFrame:
 
+        headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+
         if test is False:
             url = "https://prycd.com/_functions/comps"
         else:
@@ -91,23 +97,29 @@ class PyPrycd:
 
         params = {
             'user_id': self.__comp_api_key,
-            'count_only': comp_count,
             'county': county,
             'min_acreage': min_acreage,
             'max_acreage': max_acreage,
-            'state': state,
-            'city': city,
-            'zip_code': zip_code
+            'state': state
         }
 
-        if min_price >= 0.0:
+        if comp_count >=0:
+            params['count_only'] = comp_count
+
+        if zip_code is not None:
+            params['zip_code'] = zip_code
+
+        if city is not None:
+            params['city'] = city
+
+        if min_price > 0.0:
             params['min_price'] = min_price
         if max_price > 0.0:
             params['max_price'] = max_price
 
-        if comp_type.lower() == 'for_sale':
+        if comp_type is not None and comp_type.lower() == 'for_sale':
             params['comp_type'] = 1
-        elif comp_type.lower() == 'sold':
+        elif comp_type is not None and comp_type.lower() == 'sold':
             params['comp_type'] = 2
         else:
             params['comp_type'] = 0
@@ -133,7 +145,7 @@ class PyPrycd:
         if max_sold_date:
             params['max_sold_date'] = PyPrycd.__convert_date(max_sold_date)
 
-        response = requests.get(url, params=params, timeout=1000)
+        response = requests.get(url, headers=headers, params=params, timeout=1000)
 
         if response.status_code == 200:
             return response.json()
